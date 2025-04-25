@@ -28,17 +28,28 @@
       transform: scale(1.5) rotate(360deg);
       color: #ffcc00;
     }
+    #play-button {
+      margin-top: 40px;
+      padding: 10px 20px;
+      font-size: 1em;
+      background-color: #00ffcc;
+      color: #000;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
   <h1>Temps restant jusqu'à 19h</h1>
   <div id="timer">--:--:--</div>
 
-  <!-- Musique locale (lecture automatique en boucle) -->
-  <audio id="background-music" autoplay loop>
+  <!-- Musique avec lecture manuelle -->
+  <audio id="background-music" loop>
     <source src="joycrookes.mp3" type="audio/mpeg">
     Votre navigateur ne supporte pas l'audio HTML5.
   </audio>
+  <button id="play-button" onclick="document.getElementById('background-music').play()">▶ Lancer la musique</button>
 
   <script>
     let alertShown = false;
