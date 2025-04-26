@@ -4,9 +4,15 @@
 <head>
   <meta charset="UTF-8">
   <title>Compte à rebours et Compteur TOTS</title>
+  <link href="BRISTONE.TTF" rel="stylesheet" type="font/ttf">
   <style>
+    @font-face {
+      font-family: 'Bristone';
+      src: url('BRISTONE.TTF') format('truetype');
+    }
+
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Bristone', sans-serif;
       background: url('https://media.contentapi.ea.com/content/dam/ea/fc/fc-25/common/tots/fc25-tots-generic-feat-img-16x9.jpg') no-repeat center center fixed;
       background-size: cover;
       color: #ffffff;
@@ -27,7 +33,7 @@
       margin-top: 30px;
     }
     .player-card {
-      background: url('https://i.imgur.com/ZXJgU7j.png') no-repeat center center;
+      background: url('GogoMOcWUAAHqaL.png') no-repeat center center;
       background-size: cover;
       width: 250px;
       height: 400px;
@@ -64,6 +70,25 @@
     }
     .btn:hover, .reset-btn:hover, #toggle-music:hover {
       background-color: #00ccaa;
+    }
+
+    /* Responsive mobile version */
+    @media (max-width: 768px) {
+      .player-container {
+        flex-direction: column;
+        align-items: center;
+      }
+      .player-card {
+        width: 80%;
+        height: auto;
+      }
+      #timer {
+        font-size: 2em;
+      }
+      .btn, .reset-btn, #toggle-music {
+        font-size: 0.9em;
+        padding: 8px 16px;
+      }
     }
   </style>
 </head>
