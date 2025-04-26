@@ -3,55 +3,147 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Compte à rebours jusqu'à 19h</title>
+  <title>Compte à rebours et Compteur TOTS</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: url('https://media.contentapi.ea.com/content/dam/ea/fc/fc-25/common/tots/fc25-tots-generic-feat-img-16x9.jpg.adapt.crop191x100.1200w.jpg') no-repeat center center fixed;
+      background: url('https://media.contentapi.ea.com/content/dam/ea/fc/fc-25/common/tots/fc25-tots-generic-feat-img-16x9.jpg') no-repeat center center fixed;
       background-size: cover;
       color: #ffffff;
       text-align: center;
-      padding-top: 100px;
-    }
-    h1 {
-      font-size: 2em;
-      text-shadow: 2px 2px 8px #000;
+      padding-top: 30px;
     }
     #timer {
       font-size: 3em;
-      margin-top: 20px;
+      margin-bottom: 50px;
       color: #00ffcc;
       text-shadow: 2px 2px 8px #000;
-      transition: transform 0.3s ease, color 0.3s ease;
     }
-    #timer.celebration {
-      transform: scale(1.5) rotate(360deg);
+    .player-container {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+      margin-top: 30px;
+    }
+    .player-card {
+      background: url('https://i.imgur.com/ZXJgU7j.png') no-repeat center center;
+      background-size: cover;
+      width: 250px;
+      height: 400px;
+      border-radius: 20px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+    }
+    .player-name {
+      font-size: 1.5em;
+      margin-top: 10px;
+      font-weight: bold;
+      text-shadow: 2px 2px 5px #000;
+    }
+    .counter {
+      font-size: 4em;
+      margin-top: 50px;
       color: #ffcc00;
+      text-shadow: 2px 2px 5px #000;
     }
-    #play-button {
-      margin-top: 40px;
+    .btn, .reset-btn, #toggle-music {
+      margin: 10px;
       padding: 10px 20px;
-      font-size: 1em;
       background-color: #00ffcc;
-      color: #000;
       border: none;
       border-radius: 10px;
+      font-size: 1em;
       cursor: pointer;
+      transition: 0.3s;
+      color: black;
+    }
+    .btn:hover, .reset-btn:hover, #toggle-music:hover {
+      background-color: #00ccaa;
     }
   </style>
 </head>
 <body>
+
   <h1>Temps restant jusqu'à 19h</h1>
   <div id="timer">--:--:--</div>
 
-  <!-- Musique avec lecture manuelle -->
+  <!-- Audio Play/Pause -->
   <audio id="background-music" loop>
     <source src="joycrookes.mp3" type="audio/mpeg">
     Votre navigateur ne supporte pas l'audio HTML5.
   </audio>
-  <button id="play-button" onclick="document.getElementById('background-music').play()">▶ Lancer la musique</button>
+  <button id="toggle-music" onclick="toggleMusic()">▶ Lancer la musique</button>
+
+  <!-- Compteurs TOTS -->
+  <div class="player-container">
+    <div class="player-card">
+      <div class="player-name">Skayy</div>
+      <div id="counter-skayy" class="counter">0</div>
+      <button class="btn" onclick="addTots('skayy')">+1 TOTS</button>
+    </div>
+
+    <div class="player-card">
+      <div class="player-name">Nayloxx</div>
+      <div id="counter-nayloxx" class="counter">0</div>
+      <button class="btn" onclick="addTots('nayloxx')">+1 TOTS</button>
+    </div>
+
+    <div class="player-card">
+      <div class="player-name">Zartex</div>
+      <div id="counter-zartex" class="counter">0</div>
+      <button class="btn" onclick="addTots('zartex')">+1 TOTS</button>
+    </div>
+  </div>
+
+  <button class="reset-btn" onclick="resetTots()">Reset Tous les Compteurs</button>
 
   <script>
+    const music = document.getElementById("background-music");
+    const btnMusic = document.getElementById("toggle-music");
+
+    function toggleMusic() {
+      if (music.paused) {
+        music.play();
+        btnMusic.textContent = "⏸ Pause";
+      } else {
+        music.pause();
+        btnMusic.textContent = "▶ Reprendre";
+      }
+    }
+
+    const counters = {
+      skayy: parseInt(localStorage.getItem('skayy')) || 0,
+      nayloxx: parseInt(localStorage.getItem('nayloxx')) || 0,
+      zartex: parseInt(localStorage.getItem('zartex')) || 0
+    };
+
+    function updateCounters() {
+      for (const player in counters) {
+        document.getElementById(`counter-${player}`).textContent = counters[player];
+      }
+    }
+
+    function addTots(player) {
+      counters[player]++;
+      localStorage.setItem(player, counters[player]);
+      updateCounters();
+    }
+
+    function resetTots() {
+      for (const player in counters) {
+        counters[player] = 0;
+        localStorage.setItem(player, 0);
+      }
+      updateCounters();
+    }
+
+    updateCounters();
+
     let alertShown = false;
 
     function updateTimer() {
@@ -74,15 +166,12 @@
       if (diff <= 0 && !alertShown) {
         alert("Il est 19h !");
         alertShown = true;
-        document.getElementById("timer").classList.add("celebration");
-        setTimeout(() => {
-          document.getElementById("timer").textContent = "Bonne chance pour la TOTS !";
-        }, 1000);
       }
     }
 
     updateTimer();
     setInterval(updateTimer, 1000);
   </script>
+
 </body>
 </html>
