@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Leaderboard - King of Packs</title>
+  <link href="BRISTONE-DISPLAY.TTF" rel="stylesheet" type="font/ttf">
+  <style>
+    @font-face {
+      font-family: 'BristoneDisplay';
+      src: url('BRISTONE-DISPLAY.TTF') format('truetype');
+    }
+
+    body {
+      font-family: 'BristoneDisplay', sans-serif;
+      background: url('https://media.contentapi.ea.com/content/dam/ea/fc/fc-25/common/tots/fc25-tots-generic-feat-img-16x9.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #ffffff;
+      text-align: center;
+      padding: 30px;
+    }
+    h1 {
+      color: #FFD700;
+      font-size: 3em;
+      margin-bottom: 20px;
+    }
+    .leaderboard-entry {
+      background: rgba(0,0,0,0.6);
+      margin: 10px auto;
+      padding: 20px;
+      width: 80%;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+    }
+    .entry-title {
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+    .votes {
+      font-size: 1.2em;
+      margin-top: 10px;
+      color: #00ffcc;
+    }
+    .back-btn {
+      margin-top: 30px;
+      padding: 10px 20px;
+      background-color: #FFD700;
+      border: none;
+      border-radius: 10px;
+      font-size: 1em;
+      cursor: pointer;
+      transition: 0.3s;
+      color: black;
+      text-decoration: none;
+    }
+    .back-btn:hover {
+      background-color: #e6c200;
+    }
+
+    @media (max-width: 768px) {
+      .leaderboard-entry {
+        width: 95%;
+      }
+      h1 {
+        font-size: 2em;
+      }
+      .entry-title {
+        font-size: 1.5em;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🏆 King of Packs 🏆</h1>
+
+  <div id="leaderboard"></div>
+
+  <a href="index.html" class="back-btn">⬅ Retour à l'accueil</a>
+
+  <script>
+    const players = ['skayy', 'nayloxx', 'zartex'];
+
+    const counters = {
+      skayy: parseInt(localStorage.getItem('skayy')) || 0,
+      nayloxx: parseInt(localStorage.getItem('nayloxx')) || 0,
+      zartex: parseInt(localStorage.getItem('zartex')) || 0
+    };
+
+    const votes = {
+      skayy: parseInt(localStorage.getItem('vote-skayy')) || 0,
+      nayloxx: parseInt(localStorage.getItem('vote-nayloxx')) || 0,
+      zartex: parseInt(localStorage.getItem('vote-zartex')) || 0
+    };
+
+    const playerNames = {
+      skayy: 'Skayy',
+      nayloxx: 'Nayloxx',
+      zartex: 'Zartex'
+    };
+
+    const sorted = players.sort((a, b) => counters[b] - counters[a]);
+
+    let html = '';
+    sorted.forEach((player, index) => {
+      let medal = '';
+      if (index === 0) medal = '👑 1er';
+      else if (index === 1) medal = '🥈 2e';
+      else if (index === 2) medal = '🥉 3e';
+      
+      html += `
+        <div class="leaderboard-entry">
+          <div class="entry-title">${medal} - ${playerNames[player]}</div>
+          <div>TOTS packés : <strong>${counters[player]}</strong></div>
+          <div class="votes">Votes reçus : ${votes[player]}</div>
+        </div>
+      `;
+    });
+
+    document.getElementById('leaderboard').innerHTML = html;
+  </script>
+
+</body>
+</html>
